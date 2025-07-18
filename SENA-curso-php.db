@@ -1,0 +1,32 @@
+DROP DATABASE nicelate_db;
+CREATE DATABASE nicelate_db;
+USE nicelate_db;
+
+CREATE TABLE users (
+  pk_id_user        INT AUTO_INCREMENT PRIMARY KEY,
+  user_name         VARCHAR(50),
+  user_email        VARCHAR(100) NOT NULL UNIQUE,
+  user_password     VARCHAR(255) NOT NULL,
+  registered_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE roles (
+  pk_id_role        INT AUTO_INCREMENT PRIMARY KEY,
+  role_name         VARCHAR(100) NOT NULL,
+  role_description  VARCHAR(255) NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE user_role (
+  fk_id_user        INT NOT NULL,
+  fk_id_role         INT NOT NULL,
+  assigned_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (fk_id_user, fk_id_role),
+  FOREIGN KEY (fk_id_user)
+    REFERENCES users(pk_id_user)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY (fk_id_role)
+    REFERENCES roles(pk_id_role)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
